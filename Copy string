@@ -1,0 +1,4 @@
+string = "Welcome To SparkByExamples"
+print("Original string:", string)
+copied_string = '' + string
+print ("Copy of the string: ",copied_string)
