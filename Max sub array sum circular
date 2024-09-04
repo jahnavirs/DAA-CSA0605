@@ -1,0 +1,23 @@
+def maxSubarraySumCircular(nums):
+    n = len(nums)
+    max_kadane = float('-inf')
+    min_kadane = float('inf')
+    total_sum = 0
+    max_ending_here = 0
+    min_ending_here = 0
+
+    for i in range(n):
+        total_sum += nums[i]
+        max_ending_here = max(nums[i], max_ending_here + nums[i])
+        max_kadane = max(max_kadane, max_ending_here)
+        min_ending_here = min(nums[i], min_ending_here + nums[i])
+        min_kadane = min(min_kadane, min_ending_here)
+
+    if max_kadane > 0:
+        return max(max_kadane, total_sum - min_kadane)
+    else:
+        return max_kadane
+
+# Example usage:
+nums = [1, -2, 3, -2]
+print(maxSubarraySumCircular(nums))
