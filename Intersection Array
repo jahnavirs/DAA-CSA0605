@@ -1,0 +1,17 @@
+def intersect(nums1, nums2):
+    count1 = {}
+    count2 = {}
+    intersection = []
+
+    for num in nums1:
+        count1[num] = count1.get(num, 0) + 1
+
+    for num in nums2:
+        count2[num] = count2.get(num, 0) + 1
+
+    for num in count1:
+        if num in count2:
+            intersection.extend([num] * min(count1[num], count2[num]))
+
+    return intersection
+
