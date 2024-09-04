@@ -1,0 +1,21 @@
+def last_string_before_empty(s):
+    chars = list(s)
+    last_non_empty = ""
+
+    while chars:
+        last_non_empty = "".join(chars)
+        for char in "abcdefghijklmnopqrstuvwxyz":
+            if char in chars:
+                chars.remove(char)
+
+    return last_non_empty
+
+# Example usage:
+s = "aabcbbca"
+print(last_string_before_empty(s)) 
+
+s = "abc"
+print(last_string_before_empty(s))  
+
+s = "aabba"
+print(last_string_before_empty(s))  
