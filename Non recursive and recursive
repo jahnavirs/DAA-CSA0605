@@ -1,0 +1,69 @@
+import time
+import math
+
+# Non-recursive algorithm: O(n)
+def non_recursive_algorithm(n):
+    result = 0
+    for i in range(n):
+        result += i
+    return result
+
+# Recursive algorithm: O(2^n)
+def recursive_algorithm(n):
+    if n <= 1:
+        return n
+    else:
+        return recursive_algorithm(n-1) + recursive_algorithm(n-2)
+
+# Non-recursive algorithm with O(log n) complexity
+def non_recursive_logarithmic(n):
+    result = 0
+    while n > 0:
+        result += 1
+        n = n // 2
+    return result
+
+# Recursive algorithm with O(n log n) complexity
+def recursive_n_log_n(n):
+    if n <= 1:
+        return n
+    else:
+        mid = n // 2
+        left = recursive_n_log_n(mid)
+        right = recursive_n_log_n(n - mid)
+        return left + right + n
+
+# Measure time complexity
+def measure_time_complexity(algorithm, n):
+    start_time = time.time()
+    result = algorithm(n)
+    end_time = time.time()
+    time_taken = end_time - start_time
+    return time_taken
+
+# Test the algorithms
+n = 30
+print("Non-recursive algorithm (O(n)):", measure_time_complexity(non_recursive_algorithm, n))
+print("Recursive algorithm (O(2^n)):", measure_time_complexity(recursive_algorithm, n))
+print("Non-recursive logarithmic algorithm (O(log n)):", measure_time_complexity(non_recursive_logarithmic, n))
+print("Recursive n log n algorithm (O(n log n)):", measure_time_complexity(recursive_n_log_n, n))
+
+# Plot the time complexity
+import matplotlib.pyplot as plt
+
+ns = range(1, 31)
+times_non_recursive = [measure_time_complexity(non_recursive_algorithm, n) for n in ns]
+times_recursive = [measure_time_complexity(recursive_algorithm, n) for n in ns]
+times_non_recursive_logarithmic = [measure_time_complexity(non_recursive_logarithmic, n) for n in ns]
+times_recursive_n_log_n = [measure_time_complexity(recursive_n_log_n, n) for n in ns]
+
+plt.plot(ns, times_non_recursive, label='O(n)')
+plt.plot(ns, times_recursive, label='O(2^n)')
+plt.plot(ns, times_non_recursive_logarithmic, label='O(log n)')
+plt.plot(ns, times_recursive_n_log_n, label='O(n log n)')
+plt.xlabel('Input size (n)')
+plt.ylabel('Time taken (seconds)')
+plt.title('Time complexity comparison')
+plt.legend()
+plt.show()
+
