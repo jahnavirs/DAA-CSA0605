@@ -1,0 +1,6 @@
+def sortArrayByParityII(nums):
+    even = [num for num in nums if num % 2 == 0]
+    odd = [num for num in nums if num % 2 != 0]
+    return [even[i // 2] if i % 2 == 0 else odd[i // 2] for i in range(len(nums))]
+nums = [4, 2, 5, 7]
+print(sortArrayByParityII(nums))
