@@ -1,0 +1,17 @@
+def maxSumQueries(nums, queries):
+    MOD = 10**9 + 7
+    n = len(nums)
+    res = 0
+    for posi, xi in queries:
+        nums[posi] = xi
+    dp = [0] * n
+    dp[0] = nums[0]
+    for i in range(1, n):
+        dp[i] = max(dp[i-1], dp[i-2] + nums[i])
+    res = sum(dp) % MOD
+    return res
+
+# Example usage:
+nums = [1, 2, 3, 4, 5]
+queries = [[0, 10], [1, 5], [2, 7], [3, 3], [4, 2]]
+print(maxSumQueries(nums, queries))
