@@ -1,0 +1,15 @@
+def checkIfCanBreak(s1, s2):
+    return (sorted(s1) >= sorted(s2)) or (sorted(s1) <= sorted(s2))
+
+# Example usage:
+s1 = "abc"
+s2 = "xya"
+print(checkIfCanBreak(s1, s2))  # Output: True
+
+s1 = "abe"
+s2 = "acd"
+print(checkIfCanBreak(s1, s2))  # Output: True
+
+s1 = "leetcodee"
+s2 = "interview"
+print(checkIfCanBreak(s1, s2))
