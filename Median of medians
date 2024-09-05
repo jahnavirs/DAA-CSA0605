@@ -1,0 +1,14 @@
+def median_of_medians(arr):
+    if len(arr) <= 5:
+        return sorted(arr)[len(arr) // 2]
+
+    medians = [median_of_medians(arr[i:i+5]) for i in range(0, len(arr), 5)]
+    return median_of_medians(medians)
+
+def median(arr):
+    return sorted(arr)[len(arr) // 2]
+
+# Example usage:
+arr = [12, 3, 5, 7, 19, 1, 9, 11, 13, 2, 6, 8, 10, 4, 14, 15, 16, 17, 18]
+median_value = median_of_medians(arr)
+print("Median:", median_value)
