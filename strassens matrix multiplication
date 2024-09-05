@@ -1,0 +1,50 @@
+def strassen(A, B):
+    n = len(A)
+
+    # Base case: 1x1 matrix
+    if n == 1:
+        return [[A[0][0] * B[0][0]]]
+
+    # Split matrices into quarters
+    mid = n // 2
+    A11, A12, A21, A22 = split_matrix(A, mid)
+    B11, B12, B21, B22 = split_matrix(B, mid)
+
+    # Calculate intermediate matrices
+    M1 = strassen(add_matrices(A11, A22), add_matrices(B11, B22))
+    M2 = strassen(add_matrices(A21, A22), B11)
+    M3 = strassen(A11, sub_matrices(B12, B22))
+    M4 = strassen(A22, sub_matrices(B21, B11))
+    M5 = strassen(add_matrices(A11, A12), B22)
+    M6 = strassen(sub_matrices(A21, A11), add_matrices(B11, B12))
+ M7 = strassen(sub_matrices(A12, A22), add_matrices(B21, B22))
+
+    # Calculate final matrices
+    C11 = add_matrices(sub_matrices(add_matrices(M1, M4), M5), M7)
+    C12 = add_matrices(M3, M5)
+    C21 = add_matrices(M2, M4)
+    C22 = add_matrices(sub_matrices(add_matrices(M1, M3), M2), M6)
+
+    # Combine final matrices
+    C = combine_matrices(C11, C12, C21, C22)
+
+    return C
+
+def split_matrix(M, mid):
+    return [M[:mid][:mid], M[:mid][mid:], M[mid:][:mid], M[mid:][mid:]]
+
+def combine_matrices(C11, C12, C21, C22):
+    return [C11 + C12, C21 + C22]
+
+def add_matrices(A, B):
+    return [[A[i][j] + B[i][j] for j in range(len(A[0]))] for i in range(len(A))]
+
+def sub_matrices(A, B):
+    return [[A[i][j] - B[i][j] for j in range(len(A[0]))] for i in 
+range(len(A))]
+
+# Example usage:
+A = [[1, 2], [3, 4]]
+B = [[5, 6], [7, 8]]
+C = strassen(A, B)
+print(C)
