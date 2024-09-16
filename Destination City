@@ -1,0 +1,6 @@
+def destCity(paths):
+    outgoing_cities = set(city[0] for city in paths)
+    all_cities = set(city for path in paths for city in path)
+    
+    # Destination city is the city that is not an outgoing city
+    return (all_cities - outgoing_cities).pop()
