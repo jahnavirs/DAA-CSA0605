@@ -1,0 +1,18 @@
+ef maxDifference(num):
+    num_str = str(num)
+    
+    # First replacement (maximize a)
+    if num_str[0] == '9':
+        a = int(num_str.replace('9', '0'))
+    else:
+        min_digit = min(int(d) for d in num_str if d != '0')
+        a = int(num_str.replace(str(min_digit), '9'))
+    
+    # Second replacement (minimize b)
+    if num_str[0] == '1':
+        b = int(num_str.replace('1', '0'))
+    else:
+        max_digit = max(int(d) for d in num_str if d != '9')
+        b = int(num_str.replace(str(max_digit),'1'))
+    
+    return a - b
