@@ -1,0 +1,28 @@
+ef numberWays(hats):
+    MOD = 10**9 + 7
+    n = len(hats)
+    hats_set = [set(h) for h in hats]
+    
+    # Create a bitmask for each person's hat preferences
+    masks = []
+    for s in hats_set:
+        mask = 0
+        for h in s:
+mask |= 1 << (h - 1)
+        masks.append(mask)
+    
+    # Dynamic programming state: dp[mask] = number of ways to assign hats to people in mask
+    dp = {0: 1}
+    
+    for i in range(n):
+        new_dp = {}
+        for mask, count in dp.items():
+            if masks[i] & mask == 0:  # Person i's hats don't intersect with current mask
+                new_dp[mask | masks[i]] = (new_dp.get(mask | masks[i], 0) + count) % MOD
+ new_dp[mask] = (new_dp.get(mask, 0) + count) % MOD
+        dp = new_dp
+    
+    # The answer is stored in dp[(1 << 40) - 1], which represents all people wearing different hats
+    return dp.get((1 << 40) - 1, 0)
+
+
