@@ -1,0 +1,33 @@
+def binary_search(arr, target):
+    """
+    Searches for an element in a sorted array using Binary Search.
+
+    Args:
+        arr (list): The input array.
+        target (int): The element to search for.
+
+    Returns:
+        tuple: (index, comparisons) - Index of the target element, -1 if not found.
+    """
+    comparisons = 0
+    left, right = 0, len(arr) - 1
+    while left <= right:
+        comparisons += 1
+        mid = (left + right) // 2
+        if arr[mid] == target:
+            return mid, comparisons
+        elif arr[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+    return -1, comparisons
+# Example usage
+arr = [5, 10, 15, 20, 25, 30, 35, 40, 45]
+target = 20
+index, comparisons = binary_search(arr, target)
+if index != -1:
+    print(f"Element {target} found at index {index}.")
+else:
+    print(f"Element {target} not found.")
+print(f"Number of comparisons: {comparisons}")
+
