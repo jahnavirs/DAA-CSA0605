@@ -1,0 +1,24 @@
+def quick_sort(arr):
+    """
+    Sorts an array using Quick Sort.
+
+    Args:
+        arr (list): The input array.
+
+    Returns:
+        list: The sorted array.
+    """
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[0]
+    less = [x for x in arr[1:] if x <= pivot]
+    greater = [x for x in arr[1:] if x > pivot]
+    print(f"Partitioned array: {less} {pivot} {greater}")
+    return quick_sort(less) + [pivot] + quick_sort(greater)
+
+
+# Example usage
+arr = [10, 16, 8, 12, 15, 6, 3, 9, 5]
+print("Original array:", arr)
+sorted_arr = quick_sort(arr)
+print("Sorted array:", sorted_arr)
