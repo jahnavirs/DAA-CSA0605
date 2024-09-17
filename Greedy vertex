@@ -1,0 +1,75 @@
+ef greedy_vertex_cover(graph):
+    """
+    Returns a vertex cover of the graph.
+
+    Args:
+        graph (dict): Adjacency list representation of the graph.
+
+    Returns:
+        set: Vertex cover.
+    """
+    vertex_cover = set()
+    edges = set()
+
+    # Initialize edges
+    for vertex in graph:
+        for neighbor in graph[vertex]:
+            edge = tuple(sorted((vertex, neighbor)))
+            edges.add(edge)
+
+    while edges:
+        # Select vertex with maximum degree
+        max_degree_vertex = max(graph, key=lambda vertex: len(graph[vertex]))
+
+        # Add vertex to vertex cover
+        vertex_cover.add(max_degree_vertex)
+# Remove edges incident to selected vertex
+        edges_to_remove = [edge for edge in edges if max_degree_vertex in edge]
+        for edge in edges_to_remove:
+            edges.remove(edge)
+
+        # Remove selected vertex from graph
+        del graph[max_degree_vertex]
+        for vertex in graph:
+            if max_degree_vertex in graph[vertex]:
+                graph[vertex].remove(max_degree_vertex)
+
+    return vertex_cover
+# Example usage
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'C', 'D'],
+    'C': ['A', 'B', 'D'],
+    'D': ['B', 'C']
+}
+
+vertex_cover = greedy_vertex_cover(graph.copy())
+
+print("Vertex Cover:", vertex_cover)
+
+
+def is_vertex_cover(graph, vertex_cover):
+    """
+    Verifies if the given vertex cover is valid.
+
+    Args:
+        graph (dict): Adjacency list representation of the graph.
+        vertex_cover (set): Vertex cover.
+
+    Returns:
+        bool: True if the vertex cover is valid, False otherwise.
+    """
+    for vertex in graph:
+        for neighbor in graph[vertex]:
+            if vertex not in vertex_cover and neighbor not in vertex_cover:
+return False
+
+    return True
+
+
+# Verify vertex cover
+is_valid = is_vertex_cover(graph, vertex_cover)
+
+print("Is Valid Vertex Cover?", is_valid)
+
+
