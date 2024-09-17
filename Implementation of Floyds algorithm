@@ -1,0 +1,46 @@
+def floyd_warshall(distance_matrix):
+    num_routers = len(distance_matrix)
+
+    for k in range(num_routers):
+        for i in range(num_routers):
+            for j in range(num_routers):
+                distance_matrix[i][j] = min(distance_matrix[i][j], distance_matrix[i][k] + distance_matrix[k][j])
+
+    return distance_matrix
+
+
+def print_shortest_path(distance_matrix, router_names, start, end):
+    path = [router_names[end]]
+    current_router = end
+
+    while current_router != start:
+        for i in range(len(distance_matrix)):
+            if distance_matrix[start][i] + distance_matrix[i][current_router] == distance_matrix[start][current_router]:
+                path.insert(0, router_names[i])
+                current_router = i
+                break
+
+    return " -> ".join(path)
+Define distance matrix and router names
+distance_matrix = [
+    [0, 5, 10, float('inf'), 2, float('inf')],
+    [float('inf'), 0, 3, 8, float('inf'), float('inf')],
+    [float('inf'), float('inf'), 0, 1, 6, 4],
+    [float('inf'), float('inf'), float('inf'), 0, float('inf'), 2],
+    [float('inf'), 3, 8, 5, 0, float('inf')],
+    [float('inf'), float('inf'), float('inf'), float('inf'), 9, 0]
+]
+
+router_names = ['A', 'B', 'C', 'D', 'E', 'F']
+
+# Calculate shortest paths before link failure
+original_distance_matrix = floyd_warshall([row[:] for row in distance_matrix])
+
+print("Shortest paths before link failure:")
+print("Distance Matrix:")
+for row in original_distance_matrix:
+    print(row)
+
+print(f"Shortest path from {router_names[0]} to {router_names[5]}: {print_shortest_path(original_distance_matrix, router_names, 0, 5)}")
+
+
