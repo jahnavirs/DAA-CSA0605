@@ -1,0 +1,44 @@
+def meet_in_the_middle(Set, target_sum):
+    n = len(Set)
+    half = n // 2
+    left_subsets = {}
+    right_subsets = {}
+
+    # Generate all subsets of the left half
+    for i in range(1 << half):
+        subset_sum = 0
+        subset = []
+        for j in range(half):
+            if (i & (1 << j)):
+                subset_sum += Set[j]
+                subset.append(Set[j])
+        left_subsets[subset_sum] = subset
+
+    # Generate all subsets of the right half
+    for i in range(1 << (n - half)):
+        subset_sum = 0
+        subset = []
+        for j in range(n - half):
+            if (i & (1 << j)):
+                subset_sum += Set[half + j]
+                subset.append(Set[half + j])
+        right_subsets[subset_sum] = subset
+
+    # Find the closest sum
+    closest_sum = float('inf')
+    closest_subset = []
+for left_sum in left_subsets:
+        right_sum = target_sum - left_sum
+        if right_sum in right_subsets:
+            if abs(target_sum - (left_sum + right_sum)) < abs(target_sum - closest_sum):
+                closest_sum = left_sum + right_sum
+                closest_subset = left_subsets[left_sum] + right_subsets[right_sum]
+
+    return closest_subset, closest_sum
+
+
+Set = [45, 34, 4, 12, 5, 2]
+target_sum = 42
+closest_subset, closest_sum = meet_in_the_middle(Set, target_sum)
+print("Closest Subset:", closest_subset)
+print("Closest Sum:", closest_sum)
