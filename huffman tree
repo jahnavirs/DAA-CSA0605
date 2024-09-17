@@ -1,0 +1,80 @@
+class Node:
+    def __init__(self, char, freq):
+        self.char = char
+        self.freq = freq
+        self.left = None
+        self.right = None
+
+
+def decode_huffman(encoded_string, root):
+    """
+    Decodes a Huffman encoded string using a Huffman Tree.
+
+    Args:
+        encoded_string (str): Huffman encoded string.
+        root (Node): Root node of the Huffman Tree.
+
+    Returns:
+        str: Decoded string.
+    """
+    decoded_string = ""
+    current_node = root
+
+    for bit in encoded_string:
+        if bit == "0":
+            current_node = current_node.left
+else:
+            current_node = current_node.right
+
+        if current_node.char is not None:
+            decoded_string += current_node.char
+            current_node = root
+
+    return decoded_string
+
+
+def build_huffman_tree(huffman_codes):
+    """
+    Builds a Huffman Tree from Huffman codes.
+
+    Args:
+        huffman_codes (dict): Dictionary of Huffman codes.
+
+    Returns:
+        Node: Root node of the Huffman Tree.
+    """
+    root = Node(None, 0)
+    for char, code in huffman_codes.items():
+        current_node = root
+        for bit in code:
+            if bit == "0":
+                if current_node.left is None:
+                    current_node.left = Node(None, 0)
+                current_node = current_node.left
+ else:
+                if current_node.right is None:
+                    current_node.right = Node(None, 0)
+                current_node = current_node.right
+        current_node.char = char
+
+    return root
+
+
+# Example usage
+huffman_codes = {
+    "A": "00",
+    "B": "01",
+    "C": "10",
+    "D": "110",
+    "E": "111"
+}
+
+encoded_string = "000110111001011"
+
+root = build_huffman_tree(huffman_codes)
+decoded_string = decode_huffman(encoded_string, root)
+
+print(f"Huffman Codes: {huffman_codes}")
+print(f"Encoded String: {encoded_string}")
+print(f"Decoded String: {decoded_string}")
+
