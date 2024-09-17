@@ -1,0 +1,30 @@
+def rob(houses):
+    if not houses:
+        return 0
+    if len(houses) == 1:
+        return houses[0]
+    
+    # Rob the first house
+    def rob_first_house(houses):
+        dp = [0] * len(houses)
+        dp[0] = houses[0]
+        dp[1] = max(houses[0], houses[1])
+        for i in range(2, len(houses) - 1):
+            dp[i] = max(dp[i-1], dp[i-2] + houses[i])
+        return dp[-2]
+    
+    # Don't rob the first house
+    def dont_rob_first_house(houses):
+        dp = [0] * len(houses)
+        dp[0] = 0
+        dp[1] = houses[1]
+        for i in range(2, len(houses)):
+            dp[i] = max(dp[i-1], dp[i-2] + houses[i])
+        return dp[-1]
+    
+    return max(rob_first_house(houses), dont_rob_first_house(houses))
+
+
+houses = [2, 3, 2]
+print(rob(houses))  # Output: 3
+
