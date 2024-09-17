@@ -1,0 +1,47 @@
+import random
+
+
+def median_of_medians(arr, k):
+    """
+    Returns the k-th smallest element in the array.
+
+    Args:
+        arr (list): Unsorted array.
+        k (int): Index of the desired element (1-indexed).
+
+    Returns:
+        int: The k-th smallest element.
+    """
+
+    # Base case: If the array has only one element
+    if len(arr) == 1:
+        return arr[0]
+
+    # Divide the array into groups of 5 elements
+    groups = [arr[i:i + 5] for i in range(0, len(arr), 5)]
+
+    # Calculate the median of each group
+    medians = [sorted(group)[len(group) // 2] for group in groups]
+
+    # Recursively find the median of medians
+    pivot = median_of_medians(medians, len(medians) // 2 + 1)
+# Partition the array around the pivot
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+
+    # Determine which partition contains the k-th smallest element
+    if k <= len(left):
+        return median_of_medians(left, k)
+    elif k <= len(left) + len(middle):
+        return middle[0]
+    else:
+        return median_of_medians(right, k - len(left) - len(middle))
+
+
+# Example usage
+arr = [12, 3, 5, 7, 19, 22, 11, 6, 9]
+k = 5
+result = median_of_medians(arr, k)
+print(f"The {k}-th smallest element is: {result}")
+
