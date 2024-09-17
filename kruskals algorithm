@@ -1,0 +1,72 @@
+class DisjointSet:
+    def __init__(self, vertices):
+        self.parent = {v: v for v in vertices}
+        self.rank = {v: 0 for v in vertices}
+
+    def find(self, vertex):
+        if self.parent[vertex] != vertex:
+            self.parent[vertex] = self.find(self.parent[vertex])
+        return self.parent[vertex]
+
+    def union(self, vertex1, vertex2):
+        root1 = self.find(vertex1)
+        root2 = self.find(vertex2)
+
+        if root1 != root2:
+            if self.rank[root1] > self.rank[root2]:
+                self.parent[root2] = root1
+            else:
+                self.parent[root1] = root2
+                if self.rank[root1] == self.rank[root2]:
+                    self.rank[root2] += 1
+
+
+def kruskal(edges, vertices):
+    """
+    Returns the Minimum Spanning Tree (MST) and its total weight.
+
+    Args:
+        edges (list): List of edges where each edge is a tuple (u, v, w).
+        vertices (list): List of vertices.
+
+    Returns:
+        tuple: MST and its total weight.
+    """
+    # Sort edges by weight
+    edges.sort(key=lambda x: x[2])
+
+    # Initialize disjoint set
+    ds = DisjointSet(vertices)
+
+    # Initialize MST and total weight
+    mst = []
+    total_weight = 0
+
+    # Iterate over edges
+    for u, v, w in edges:
+        # Check if adding edge forms a cycle
+        if ds.find(u) != ds.find(v):
+            mst.append((u, v, w))
+            total_weight += w
+            ds.union(u, v)
+return mst, total_weight
+
+
+# Example usage
+edges = [
+    ('A', 'B', 2),
+    ('A', 'C', 3),
+    ('B', 'C', 1),
+    ('B', 'D', 4),
+    ('C', 'D', 5),
+    ('D', 'E', 6)
+]
+
+vertices = ['A', 'B', 'C', 'D', 'E']
+
+mst, total_weight = kruskal(edges, vertices)
+
+print("Minimum Spanning Tree:")
+for edge in mst:
+    print(f"{edge[0]} - {edge[1]} : {edge[2]}")
+print(f"Total Weight: {total_weight}")
