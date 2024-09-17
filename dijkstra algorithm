@@ -1,0 +1,124 @@
+import sys
+import heapq
+
+
+def dijkstra(graph, source):
+    """
+    Returns the shortest distances from the source vertex to all other vertices.
+
+    Args:
+        graph (list): Adjacency matrix representing the graph.
+        source (int): Source vertex.
+
+    Returns:
+        list: Shortest distances from the source vertex.
+    """
+
+    # Initialize distances with infinity
+    distances = [sys.maxsize] * len(graph)
+    distances[source] = 0  # Distance to source is 0
+
+    # Initialize priority queue with source vertex
+    pq = [(0, source)]
+ while pq:
+        # Extract vertex with minimum distance
+        current_distance, current_vertex = heapq.heappop(pq)
+
+        # If current distance is greater than already found distance, skip
+        if current_distance > distances[current_vertex]:
+            continue
+
+        # Iterate over neighbors
+        for neighbor, weight in enumerate(graph[current_vertex]):
+            # If there is no edge, skip
+            if weight == sys.maxsize:
+                continue
+
+            # Calculate new distance
+            new_distance = current_distance + weight
+
+            # If new distance is less than already found distance, update
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+                heapq.heappush(pq, (new_distance, neighbor))
+
+    return distances
+def shortest_paths(graph, source):
+    """
+    Returns the shortest paths from the source vertex to all other vertices.
+
+    Args:
+        graph (list): Adjacency matrix representing the graph.
+        source (int): Source vertex.
+
+    Returns:
+        dict: Shortest paths from the source vertex.
+    """
+
+    # Initialize distances and previous vertices
+    distances = [sys.maxsize] * len(graph)
+    distances[source] = 0
+    previous = {source: None}
+
+    # Initialize priority queue with source vertex
+    pq = [(0, source)]
+
+    while pq:
+        # Extract vertex with minimum distance
+        current_distance, current_vertex = heapq.heappop(pq)
+
+        # If current distance is greater than already found distance, skip
+        if current_distance > distances[current_vertex]:
+            continue
+
+        # Iterate overneighbors
+        for neighbor, weight in enumerate(graph[current_vertex]):
+            # If there is no edge, skip
+            if weight == sys.maxsize:
+                continue
+
+            # Calculate new distance
+            new_distance = current_distance + weight
+
+            # If new distance is less than already found distance, update
+            if new_distance < distances[neighbor]:
+                distances[neighbor] = new_distance
+                previous[neighbor] = current_vertex
+                heapq.heappush(pq, (new_distance, neighbor))
+
+    # Build shortest paths
+    paths = {}
+    for vertex in range(len(graph)):
+        path = []
+        current_vertex = vertex
+        while current_vertex is not None:
+            path.append(current_vertex)
+            current_vertex = previous.get(current_vertex)
+        paths[vertex] = list(reversed(path))
+
+    return distances, paths
+
+
+# Example usage
+graph = [
+    [0, 4, sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, 8, sys.maxsize],
+    [4, 0, 8, sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, 11, sys.maxsize],
+    [sys.maxsize, 8, 0, 7, sys.maxsize, 4, sys.maxsize, sys.maxsize, 2],
+    [sys.maxsize, sys.maxsize, 7, 0, 9, 14, sys.maxsize, sys.maxsize, sys.maxsize],
+    [sys.maxsize, sys.maxsize, sys.maxsize, 9, 0, 10, sys.maxsize, sys.maxsize, sys.maxsize],
+    [sys.maxsize, sys.maxsize, 4, 14, 10, 0, 2, sys.maxsize, sys.maxsize],
+    [sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, 2, 0, 1, 6],
+    [8, 11, sys.maxsize, sys.maxsize, sys.maxsize, sys.maxsize, 1, 0, 7],
+    [sys.maxsize, sys.maxsize, 2, sys.maxsize, sys.maxsize, sys.maxsize, 6, 7, 0]
+]
+
+source = 0
+distances, paths = shortest_paths(graph, source)
+
+for vertex in range(len(graph)):
+    print(f"Shortest distance from {source} to {vertex}: {distances[vertex]}")
+    print(f"Shortest path from {source} to {vertex}: {paths[vertex]}")
+
+
+ 
+     
