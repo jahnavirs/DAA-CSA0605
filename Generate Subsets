@@ -1,0 +1,17 @@
+def subsets(S):
+    S.sort()  # Sort to handle duplicates and ensure lexicographical order
+    S = list(set(S))  # Remove duplicates
+    n = len(S)
+    result = []
+
+    # Generate all subsets using bit manipulation
+    for i in range(1 << n):  # 1 << n is equivalent to 2^n
+        subset = [S[j] for j in range(n) if (i & (1 << j))]
+        result.append(subset)
+
+    result.sort()  # Sort subsets in lexicographical order
+    return result
+
+
+A = [1, 2, 3]
+print(subsets(A))
