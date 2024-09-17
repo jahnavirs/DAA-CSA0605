@@ -1,0 +1,16 @@
+def findKthPositive(arr, k):
+# Initialize two pointers
+i, missing_count = 0, 0
+
+# Iterate through all positive integers
+num = 1
+while missing_count < k:
+    # If num is not in arr, increment missing_count
+    if i == len(arr) or num < arr[i]:
+        missing_count += 1
+        if missing_count == k:
+            return num
+    # Otherwise, increment i
+    else:
+        i += 1
+    num += 1
