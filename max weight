@@ -1,0 +1,40 @@
+def max_weight(weights, capacity):
+    """
+    Returns the maximum weight that can be loaded into the container.
+
+    Args:
+        weights (list): List of item weights.
+        capacity (int): Maximum capacity of the container.
+
+    Returns:
+        int: Maximum weight that can be loaded.
+    """
+    # Sort weights in descending order
+    weights.sort(reverse=True)
+
+    total_weight = 0
+    loaded_items = []
+
+    # Iterate over weights
+    for weight in weights:
+        # Check if adding current weight exceeds capacity
+        if total_weight + weight <= capacity:
+            total_weight += weight
+            loaded_items.append(weight)
+else:
+            # If not enough capacity for whole item, break
+            break
+
+    return total_weight, loaded_items
+
+
+# Example usage
+weights = [10, 20, 30, 40, 50]
+capacity = 100
+
+max_weight_loaded, loaded_items = max_weight(weights, capacity)
+
+print(f"Maximum weight loaded: {max_weight_loaded}")
+print(f"Loaded items: {loaded_items}")
+
+
