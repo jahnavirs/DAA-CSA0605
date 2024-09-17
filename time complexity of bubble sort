@@ -1,0 +1,85 @@
+import random
+import time
+import matplotlib.pyplot as plt
+
+
+def bubble_sort(arr):
+    """
+    Sorts an array using the Bubble Sort algorithm.
+
+    Args:
+        arr (list): The input array.
+
+    Returns:
+        list: The sorted array.
+    """
+    n = len(arr)
+    for i in range(n):
+        swapped = False
+        for j in range(n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+                swapped = True
+        if not swapped:
+            break
+    return arr
+# Time Complexity Analysis
+sizes = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+best_case_times = []
+avg_case_times = []
+worst_case_times = []
+
+for size in sizes:
+    # Best-Case (Already Sorted)
+    arr_best = list(range(size))
+    start_time = time.time()
+    bubble_sort(arr_best)
+    end_time = time.time()
+    best_case_times.append(end_time - start_time)
+
+    # Average-Case (Randomly Ordered)
+    arr_avg = [random.randint(0, size) for _ in range(size)]
+    start_time = time.time()
+    bubble_sort(arr_avg)
+    end_time = time.time()
+    avg_case_times.append(end_time - start_time)
+# Time Complexity Analysis
+sizes = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+best_case_times = []
+avg_case_times = []
+worst_case_times = []
+
+for size in sizes:
+    # Best-Case (Already Sorted)
+    arr_best = list(range(size))
+    start_time = time.time()
+    bubble_sort(arr_best)
+    end_time = time.time()
+    best_case_times.append(end_time - start_time)
+
+    # Average-Case (Randomly Ordered)
+    arr_avg = [random.randint(0, size) for _ in range(size)]
+    start_time = time.time()
+    bubble_sort(arr_avg)
+    end_time = time.time()
+    avg_case_times.append(end_time - start_time)
+# Worst-Case (Reverse Sorted)
+    arr_worst = list(range(size - 1, -1, -1))
+    start_time = time.time()
+    bubble_sort(arr_worst)
+    end_time = time.time()
+    worst_case_times.append(end_time - start_time)
+
+
+# Plot Time Complexity
+plt.plot(sizes, best_case_times, label='Best-Case')
+plt.plot(sizes, avg_case_times, label='Average-Case')
+plt.plot(sizes, worst_case_times, label='Worst-Case')
+plt.xlabel('Array Size')
+plt.ylabel('Time (seconds)')
+plt.title('Bubble Sort Time Complexity')
+plt.legend()
+plt.show()
+
+
+
