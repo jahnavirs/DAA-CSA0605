@@ -1,0 +1,32 @@
+def findPaths(m, n, maxMove, startRow, startColumn):
+    directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]
+    dp = {}
+
+    def dfs(row, col, moves):
+        if (row, col, moves) in dp:
+            return dp[(row, col, moves)]
+        
+        if moves < 0:
+            return 0
+        if row < 0 or row >= m or col < 0 or col >= n:
+            return 1
+        
+        ways = 0
+        for dr, dc in directions:
+            nr, nc = row + dr, col + dc
+            ways += dfs(nr, nc, moves - 1)
+        
+        dp[(row, col, moves)] = ways
+        return ways
+
+    return dfs(startRow, startColumn, maxMove)
+
+
+m = 2
+n = 3
+maxMove = 2
+startRow = 0
+startColumn = 0
+print(findPaths(m, n, maxMove, startRow, startColumn))
+
+
