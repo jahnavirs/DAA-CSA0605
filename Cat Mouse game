@@ -1,0 +1,45 @@
+rom collections import defaultdict
+
+def catMouseGame(graph):
+    n = len(graph)
+    dp = [[[0] * 3 for _ in range(n)] for _ in range(n)]
+
+    for mouse in range(n):
+        for cat in range(n):
+            dp[mouse][cat][0] = dp[mouse][cat][1] = dp[mouse][cat][2] = -1
+
+    def dfs(mouse, cat, turn):
+        if mouse == cat:
+            return 2
+        if mouse == 0:
+            return 1
+        if dp[mouse][cat][turn] != -1:
+            return dp[mouse][cat][turn]
+
+        if turn == 0:  # Mouse's turn
+            win = False
+            for neighbor in graph[mouse]:
+                if dfs(neighbor, cat, 1) == 1:
+                    dp[mouse][cat][turn] = 1
+                    return 1
+                win = win or dfs(neighbor, cat, 1) == 0
+            if win:
+                dp[mouse][cat][turn] = 0
+                return 0
+dp[mouse][cat][turn] = 2
+            return 2
+        else:  # Cat's turn
+            win = False
+            for neighbor in graph[cat]:
+                if neighbor != 0 and dfs(mouse, neighbor, 0) == 2:
+                    dp[mouse][cat][turn] = 2
+                    return 2
+                win = win or dfs(mouse, neighbor, 0) == 0
+            if win:
+                dp[mouse][cat][turn] = 0
+                return 0
+            dp[mouse][cat][turn] = 1
+            return 1
+
+    return dfs(1, 2, 0)
+
