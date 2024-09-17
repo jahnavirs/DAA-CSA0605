@@ -1,0 +1,39 @@
+def min_containers(weights, capacity):
+    """
+    Returns the minimum number of containers required.
+
+    Args:
+        weights (list): List of item weights.
+        capacity (int): Maximum capacity of each container.
+
+    Returns:
+        int: Minimum number of containers.
+    """
+    # Sort weights in descending order
+    weights.sort(reverse=True)
+
+    num_containers = 0
+    current_capacity = 0
+
+    # Iterate over weights
+    for weight in weights:
+        # Check if adding current weight exceeds capacity
+        if current_capacity + weight > capacity:
+            num_containers += 1
+            current_capacity = 0
+        current_capacity += weight
+
+    # Add one more container if there are remaining items
+    if current_capacity > 0:
+        num_containers += 1
+
+    return num_containers
+
+
+# Example usage
+weights = [10, 20, 30, 40, 50]
+capacity = 100
+
+min_containers_required = min_containers(weights, capacity)
+
+print(f"Minimum containers required: {min_containers_required}")
