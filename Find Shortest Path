@@ -1,0 +1,48 @@
+def floyd_warshall(distance_matrix):
+    num_cities = len(distance_matrix)
+
+    # Print initial distance matrix
+    print("Initial Distance Matrix:")
+    for row in distance_matrix:
+        print(row)
+
+    for k in range(num_cities):
+        for i in range(num_cities):
+            for j in range(num_cities):
+                distance_matrix[i][j] = min(distance_matrix[i][j], distance_matrix[i][k] + distance_matrix[k][j])
+
+    # Print final distance matrix
+    print("\nFinal Distance Matrix (Shortest Paths):")
+    for row in distance_matrix:
+        print(row)
+def print_shortest_path(distance_matrix, city_names, start, end):
+    print(f"\nShortest Path from {city_names[start]} to {city_names[end]}:")
+    path = [city_names[end]]
+    current_city = end
+
+    while current_city != start:
+        for i in range(len(distance_matrix)):
+            if distance_matrix[start][i] + distance_matrix[i][current_city] == distance_matrix[start][current_city]:
+                path.insert(0, city_names[i])
+                current_city = i
+                break
+
+    print(" -> ".join(path))
+
+
+# Define distance matrix and city names
+distance_matrix = [
+    [0, 5, float('inf'), 10, 2],
+    [float('inf'), 0, 3, float('inf'), float('inf')],
+    [float('inf'), float('inf'), 0, 1, 6],
+    [float('inf'), float('inf'), float('inf'), 0, float('inf')],
+    [float('inf'), 3, 8, 5, 0]
+]
+city_names = ['A', 'B', 'C', 'D', 'E']
+
+# Apply Floyd's Algorithm
+floyd_warshall(distance_matrix)
+
+# Print shortest path
+print_shortest_path(distance_matrix, city_names, 0, 3)
+``"
