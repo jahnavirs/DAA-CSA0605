@@ -1,0 +1,37 @@
+def obst(keys, frequencies):
+    n = len(keys)
+    cost = [[0 for _ in range(n)] for _ in range(n)]
+    root = [[0 for _ in range(n)] for _ in range(n)]
+
+    for i in range(n):
+        cost[i][i] = frequencies[i]
+        root[i][i] = i
+
+    for L in range(2, n + 1):
+        for i in range(n - L + 1):
+            j = i + L - 1
+            cost[i][j] = float('inf')
+            for r in range(i, j + 1):
+                c = sum(frequencies[i:j + 1]) + (sum(frequencies[i:r]) * (r - i) + sum(frequencies[r + 1:j + 1]) * (j - r))
+                if c < cost[i][j]:
+                    cost[i][j] = c
+                    root[i][j] = r
+
+    return cost, root
+
+
+keys = ['A', 'B', 'C', 'D']
+frequencies = [0.1, 0.2, 0.3, 0.4]
+
+cost, root = obst(keys, frequencies)
+
+print("Cost Matrix:")
+for row in cost:
+    print(row)
+print("\nRoot Matrix:")
+for row in root:
+    print(row)
+
+print("\nOptimal Cost:", cost[0][len(keys) - 1])
+
+
