@@ -1,0 +1,91 @@
+class Graph:
+    def __init__(self, vertices):
+        self.vertices = vertices
+        self.edges = []
+
+    def add_edge(self, u, v, w):
+        self.edges.append((u, v, w))
+
+
+def find_mst(graph):
+    # Kruskal's Algorithm implementation
+    edges = sorted(graph.edges, key=lambda x: x[2])
+    vertices = graph.vertices
+    mst = []
+    disjoint_set = {}
+
+    for vertex in vertices:
+        disjoint_set[vertex] = vertex
+
+    for u, v, w in edges:
+        if disjoint_set[u] != disjoint_set[v]:
+            mst.append((u, v, w))
+            old_root = disjoint_set[v]
+            for vertex in vertices:
+                if disjoint_set[vertex] == old_root:
+                    disjoint_set[vertex] = disjoint_set[u]
+return mst
+
+
+def is_unique_mst(graph, mst):
+    max_weight_edge = max(mst, key=lambda x: x[2])
+    alternative_edges = [(u, v, w) for u, v, w in graph.edges if (u, v, w) not in mst and w == max_weight_edge[2]]
+
+    for u, v, w in alternative_edges:
+        alternative_mst = [edge for edge in mst if edge != max_weight_edge]
+        alternative_mst.append((u, v, w))
+
+        if is_mst(graph, alternative_mst):
+            return False, alternative_mst
+
+    return True, None
+
+
+def is_mst(graph, mst):
+    # Check if MST spans all vertices
+    vertices = set()
+    for u, v, w in mst:
+        vertices.add(u)
+        vertices.add(v)
+
+    if len(vertices) != len(graph.vertices):
+        return False
+# Check if MST contains no cycles
+    disjoint_set = {}
+    for vertex in graph.vertices:
+        disjoint_set[vertex] = vertex
+
+    for u, v, w in mst:
+        if disjoint_set[u] == disjoint_set[v]:
+            return False
+        old_root = disjoint_set[v]
+        for vertex in graph.vertices:
+            if disjoint_set[vertex] == old_root:
+                disjoint_set[vertex] = disjoint_set[u]
+
+    return True
+
+
+# Example usage
+graph = Graph(['A', 'B', 'C', 'D', 'E'])
+graph.add_edge('A', 'B', 2)
+graph.add_edge('A', 'C', 3)
+graph.add_edge('B', 'C', 1)
+graph.add_edge('B', 'D', 4)
+graph.add_edge('C', 'D', 5)
+graph.add_edge('D', 'E', 6)
+
+mst = find_mst(graph)
+is_unique, alternative_mst = is_unique_mst(graph, mst)
+
+print("Given MST:")
+for edge in mst:
+    print(f"{edge[0]} - {edge[1]} : {edge[2]}")
+if is_unique:
+    print("The MST is unique.")
+else:
+    print("The MST is not unique.")
+    print("Alternative MST:")
+    for edge in alternative_mst:
+        print(f"{edge[0]} - {edge[1]} : {edge[2]}")
+
