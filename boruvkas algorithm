@@ -1,0 +1,83 @@
+class DisjointSet:
+    def __init__(self, vertices):
+        self.parent = {v: v for v in vertices}
+        self.rank = {v: 0 for v in vertices}
+
+    def find(self, vertex):
+        if self.parent[vertex] != vertex:
+            self.parent[vertex] = self.find(self.parent[vertex])
+        return self.parent[vertex]
+
+    def union(self, vertex1, vertex2):
+        root1 = self.find(vertex1)
+        root2 = self.find(vertex2)
+
+        if root1 != root2:
+            if self.rank[root1] > self.rank[root2]:
+                self.parent[root2] = root1
+            else:
+                self.parent[root1] = root2
+                if self.rank[root1] == self.rank[root2]:
+                    self.rank[root2] += 1
+class Graph:
+    def __init__(self, vertices):
+        self.V = vertices
+        self.edges = []
+
+    def add_edge(self, u, v, weight):
+        self.edges.append((u, v, weight))
+
+    def boruvka_mst(self):
+        mst = []
+        disjoint_set = DisjointSet(range(self.V))
+        sorted_edges = sorted(self.edges, key=lambda x: x[2])
+
+        while len(mst) < self.V - 1:
+            cheapest_edges = {}
+            for u, v, weight in sorted_edges:
+                root_u = disjoint_set.find(u)
+                root_v = disjoint_set.find(v)
+                if root_u != root_v:
+                    if root_u not in cheapest_edges or cheapest_edges[root_u][2] > weight:
+                        cheapest_edges[root_u] = (u, v, weight)
+                    if root_v not in cheapest_edges or cheapest_edges[root_v][2] > weight:
+                        cheapest_edges[root_v] = (u, v, weight)
+
+            for edge in cheapest_edges.values():
+ u, v, weight = edge
+                if disjoint_set.find(u) != disjoint_set.find(v):
+                    disjoint_set.union(u, v)
+                    mst.append(edge)
+
+            sorted_edges = [(u, v, weight) for u, v, weight in sorted_edges if disjoint_set.find(u) != disjoint_set.find(v)]
+
+        return mst
+
+
+def main():
+    vertices = 5
+    edges = [
+        (0, 1, 2),
+        (0, 3, 6),
+        (1, 2, 3),
+        (1, 4, 5),
+        (2, 4, 7),
+        (3, 4, 9)
+    ]
+
+    graph = Graph(vertices)
+    for u, v, weight in edges:
+        graph.add_edge(u, v, weight)
+
+    mst = graph.boruvka_mst()
+ print("Minimum Spanning Tree:")
+    total_cost = 0
+    for u, v, weight in mst:
+        print(f"{u} - {v} : {weight}")
+        total_cost += weight
+    print(f"Total Cost: {total_cost}")
+
+
+if __name__ == "__main__":
+    main()
+
