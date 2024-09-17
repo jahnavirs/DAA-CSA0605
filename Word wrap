@@ -1,0 +1,46 @@
+def fullJustify(words, maxWidth):
+    result = []
+    current_line = []
+    current_width = 0
+
+    for word in words:
+        if current_width + len(word) + len(current_line) > maxWidth:
+            # Justify current line
+            result.append(justify_line(current_line, maxWidth))
+            current_line = []
+            current_width = 0
+
+        current_line.append(word)
+        current_width += len(word)
+
+    # Left-justify last line
+    result.append(left_justify_last_line(current_line, maxWidth))
+
+    return result
+
+
+def justify_line(words, maxWidth):
+    total_chars = sum(len(word) for word in words)
+ total_spaces = maxWidth - total_chars
+    gaps = len(words) - 1
+
+    if gaps == 0:
+        return words[0] + ' ' * total_spaces
+
+    space_per_gap = total_spaces // gaps
+    extra_spaces = total_spaces % gaps
+
+    justified_line = ''
+    for i, word in enumerate(words):
+        justified_line += word
+        if i < gaps:
+            justified_line += ' ' * space_per_gap
+            if i < extra_spaces:
+                justified_line += ' '
+
+    return justified_line
+
+
+def left_justify_last_line(words, maxWidth):
+    last_line = ' '.join(words)
+    return last_line + ' ' * (maxWidth - len(last_line))
