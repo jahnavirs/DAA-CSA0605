@@ -1,0 +1,49 @@
+def is_hamiltonian_cycle(edges, n):
+    # Create adjacency list
+    graph = [[] for _ in range(n)]
+    for u, v in edges:
+        graph[u].append(v)
+        graph[v].append(u)
+
+    # Check if graph is complete
+    if len(graph) < n:
+        return False
+
+    # Function to check if vertex can be added to Hamiltonian cycle
+    def is_valid(vertex, pos, path):
+        if vertex in path:
+            return False
+        if pos == n - 1 and vertex not in graph[path[0]]:
+            return False
+        return True
+
+    # Function to find Hamiltonian cycle
+    def find_hamiltonian_cycle(path, pos):
+        if pos == n:
+            return path[0] in graph[path[-1]]
+
+        for vertex in range(n):
+            if is_valid(vertex, pos, path):
+                path.append(vertex)
+                if find_hamiltonian_cycle(path, pos + 1):
+                    return True
+                path.pop()
+
+        return False
+# Find Hamiltonian cycle
+    for start_vertex in range(n):
+        if find_hamiltonian_cycle([start_vertex], 1):
+            return True
+
+    return False
+
+
+# Test the function
+edges = [(0, 1), (1, 2), (2, 3), (3, 0), (0, 2), (2, 0), (3, 1)]
+n = 4
+print(is_hamiltonian_cycle(edges, n))  # Output: True
+
+
+edges = [(0, 1), (1, 2), (2, 3)]
+n = 4
+print(is_hamiltonian_cycle(edges, n))  
