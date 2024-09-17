@@ -1,0 +1,23 @@
+def find_max_min(array):
+    if len(array) == 0:
+        return None, None
+
+    max_val = array[0]
+    min_val = array[0]
+
+    for num in array:
+        if num > max_val:
+            max_val = num
+        elif num < min_val:
+            min_val = num
+
+    return max_val, min_val
+
+
+# Test the function
+array = [12, 45, 7, 23, 56, 89, 34]
+max_value, min_value = find_max_min(array)
+
+print("Array:", array)
+print("Maximum Value:", max_value)
+print("Minimum Value:", min_value)
