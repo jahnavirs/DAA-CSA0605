@@ -1,0 +1,33 @@
+def meet_in_the_middle(arr, target_sum):
+    n = len(arr)
+    half = n // 2
+    
+    # Sort the array
+    arr.sort()
+    
+    # Generate all subset sums of the left half
+    left_subsets = set()
+    for i in range(1 << half):
+        subset_sum = 0
+        for j in range(half):
+            if (i & (1 << j)):
+                subset_sum += arr[j]
+        left_subsets.add(subset_sum)
+    
+    # Check if target sum can be achieved with right half
+    for i in range(1 << (n - half)):
+        subset_sum = 0
+        for j in range(n - half):
+            if (i & (1 << j)):
+                subset_sum += arr[half + j]
+        if target_sum - subset_sum in left_subsets:
+            return True
+    
+    return False
+
+
+arr = [10, 20, 30, 40, 50, 5, 25]
+target_sum = 65
+result = meet_in_the_middle(arr, target_sum)
+print("Subset sums exactly to", target_sum, ":", result)
+
