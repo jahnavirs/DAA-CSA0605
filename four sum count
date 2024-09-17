@@ -1,0 +1,40 @@
+def fourSumCount(A, B, C, D):
+    """
+    Returns the number of tuples (i, j, k, l) such that A[i] + B[j] + C[k] + D[l] is zero.
+
+    Args:
+        A (list): List of integers.
+        B (list): List of integers.
+        C (list): List of integers.
+        D (list): List of integers.
+
+    Returns:
+        int: The number of tuples.
+    """
+
+    # Initialize hashmap to store sums of pairs of elements from A and B
+    sum_count = {}
+    for a in A:
+        for b in B:
+            sum_count[a + b] = sum_count.get(a + b, 0) + 1
+
+    # Initialize count of tuples
+    count = 0
+
+    # Iterate over pairs of elements from C and D
+    for c in C:
+        for d in D:
+            # Calculate the sum that would make A[i] + B[j] + C[k] + D[l] zero
+            target = -(c + d)
+            # Increment count by the number of pairs in A and B with the target sum
+            count += sum_count.get(target, 0)
+ return count
+
+
+# Example usage
+A = [1, 2]
+B = [-2, -1]
+C = [-1, 2]
+D = [0, 2]
+result = fourSumCount(A, B, C, D)
+print(f"The number of tuples is: {result}")
