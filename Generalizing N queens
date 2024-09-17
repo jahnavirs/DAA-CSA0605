@@ -1,0 +1,104 @@
+8×10 Rectangular Board
+def solve_n_queens(m, n, num_queens):
+    def is_safe(board, row, col):
+        for i in range(row):
+            if board[i][col] == 1:
+                return False
+            if col - (row - i) >= 0 and board[i][col - (row - i)] == 1:
+                return False
+            if col + (row - i) < n and board[i][col + (row - i)] == 1:
+                return False
+        return True
+
+    def solve(board, row):
+        if row == m:
+            return True
+        for col in range(n):
+            if is_safe(board, row, col):
+                board[row][col] = 1
+                if solve(board, row + 1):
+                    return True
+                board[row][col] = 0
+        return False
+board = [[0]*n for _ in range(m)]
+    return solve(board, 0)
+
+
+m, n, num_queens = 8, 10, 8
+solution = solve_n_queens(m, n, num_queens)
+print("Solution found:", solution)
+
+
+
+5×5 Board with Obstacles
+
+
+
+def solve_n_queens_obstacles(board, num_queens):
+    def is_safe(row, col):
+        for i in range(row):
+            if board[i][col] == 1:
+                return False
+            if col - (row - i) >= 0 and board[i][col - (row - i)] == 1:
+                return False
+            if col + (row - i) < len(board[0]) and board[i][col + (row - i)] == 1:
+                return False
+        return True
+
+    def solve(row):
+        if row == len(board):
+            return True
+        for col in range(len(board[0])):
+            if board[row][col] == 0 and is_safe(row, col):
+                board[row][col] = 1
+if solve(row + 1):
+                    return True
+                board[row][col] = 0
+        return False
+
+    return solve(0)
+
+
+board = [
+    [0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0]
+]
+num_queens = 5
+solution = solve_n_queens_obstacles(board, num_queens)
+print("Solution found:", solution)
+6×6 Board with Restricted Positions
+
+
+
+def solve_n_queens_restricted(board, num_queens):
+    def is_safe(row, col):
+        for i in range(row):
+            if board[i][col] == 1:
+                return False
+            if col - (row - i) >= 0 and board[i][col - (row - i)] == 1:
+                return False
+            if col + (row - i) < len(board[0]) and board[i][col + (row - i)] == 1:
+                return False
+        return True
+
+    def solve(row):
+        if row == len(board):
+            return True
+        for col in range(len(board[0])):
+            if board[row][col] == 0 and is_safe(row, col):
+                board[row][col] = 1
+                if solve(row + 1):
+                    return True
+                board[row][col] = 0
+        return False
+
+    return solve(0)
+board = [
+    [0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
