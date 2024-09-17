@@ -1,0 +1,28 @@
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.indices = []
+
+class WordFilter:
+    def __init__(self, words):
+        self.root = TrieNode()
+        for index, word in enumerate(words):
+            for i in range(len(word)):
+                self.add_word(word[i:] + '#' + word, index)
+
+    def add_word(self, word, index):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+            node.indices.append(index)
+
+    def f(self, prefix, suffix):
+        word = suffix + '#' + prefix
+        node = self.root
+ for char in word:
+            if char not in node.children:
+                return -1
+            node = node.children[char]
+        return max(node.indices) if node.indices else -1
