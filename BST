@@ -1,0 +1,40 @@
+def binary_search(arr, target):
+    """
+    Searches for an element in a sorted array using Binary Search.
+
+    Args:
+        arr (list): The input array.
+        target (int): The element to search for.
+
+    Returns:
+        int: Index of the target element, -1 if not found.
+    """
+    left, right = 0, len(arr) - 1
+    comparisons = 0
+
+    while left <= right:
+        comparisons += 1
+        mid = (left + right) // 2
+        print(f"Mid-point: {mid}, Array[mid]: {arr[mid]}")
+
+        if arr[mid] == target:
+            print(f"Element {target} found at index {mid}.")
+            print(f"Number of comparisons: {comparisons}")
+            return mid
+        elif arr[mid] < target:
+            print(f"Moving right half...")
+            left = mid + 1
+else:
+            print(f"Moving left half...")
+            right = mid - 1
+
+    print(f"Element {target} not found.")
+    print(f"Number of comparisons: {comparisons}")
+    return -1
+
+
+# Example usage
+arr = [3, 9, 14, 19, 25, 31, 42, 47, 53]
+target = 31
+binary_search(arr, target)
+
