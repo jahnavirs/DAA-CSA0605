@@ -1,0 +1,58 @@
+def obst(keys, frequencies):
+    n = len(keys)
+    total_probability = sum(frequencies)
+    probabilities = [freq / total_probability for freq in frequencies]
+
+    # Initialize cost and root matrices
+    cost = [[0.0 for _ in range(n)] for _ in range(n)]
+    root = [[0 for _ in range(n)] for _ in range(n)]
+
+    # Initialize diagonal elements
+    for i in range(n):
+        cost[i][i] = probabilities[i]
+        root[i][i] = i
+
+    # Fill cost and root matrices
+    for L in range(2, n + 1):
+        for i in range(n - L + 1):
+            j = i + L - 1
+            cost[i][j] = float('inf')
+            for r in range(i, j + 1):
+                # Calculate probability of nodes not in the subtree
+                prob_not_in_subtree = 1
+                for k in range(i, j + 1):
+                    if k != r:
+                        prob_not_in_subtree -= probabilities[k]
+
+                # Calculate expected cost
+expected_cost = prob_not_in_subtree + sum(probabilities[i:r] + probabilities[r + 1:j + 1])
+
+                # Update cost and root if expected cost is less
+                if expected_cost < cost[i][j]:
+                    cost[i][j] = expected_cost
+                    root[i][j] = r
+
+    return cost, root, probabilities
+
+
+keys = [10, 12, 16, 21]
+frequencies = [4, 2, 6, 3]
+
+cost, root, probabilities = obst(keys, frequencies)
+
+print("Keys:", keys)
+print("Frequencies:", frequencies)
+print("Probabilities:", probabilities)
+
+print("\nCost Matrix:")
+for row in cost:
+    print(row)
+
+print("\nRoot Matrix:")
+for row in root:
+    print(row)
+
+print("\nOptimal Cost:", cost[0][len(keys) - 1])
+
+
+
