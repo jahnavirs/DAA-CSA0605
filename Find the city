@@ -1,0 +1,30 @@
+import heapq
+
+def findTheCity(n, edges, distanceThreshold):
+    graph = [[] for _ in range(n)]
+    for u, v, w in edges:
+        graph[u].append((v, w))
+        graph[v].append((u, w))
+
+    def dijkstra(city):
+        distances = [float('inf')] * n
+        distances[city] = 0
+        pq = [(0, city)]
+        while pq:
+            dist, curr_city = heapq.heappop(pq)
+            for neighbor, weight in graph[curr_city]:
+                new_dist = dist + weight
+                if new_dist < distances[neighbor]:
+                    distances[neighbor] = new_dist
+                    heapq.heappush(pq, (new_dist, neighbor))
+        return sum(dist <= distanceThreshold for dist in distances) - 1
+
+    min_reachable = float('inf')
+    result = 0
+    for city in range(n):
+        reachable = dijkstra(city)
+        if reachable <= min_reachable:
+          min_reachable = reachable
+            result = city
+
+    return result
