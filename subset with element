@@ -1,0 +1,16 @@
+def subsets_with_element(E, x):
+    # Initialize result with the element x as a subset
+    result = [[x]]
+    
+    # Iterate over the remaining elements
+    for elem in [i for i in E if i != x]:
+        # For each existing subset, create a new subset by adding the current element
+        result += [curr + [elem] for curr in result]
+    
+    return result
+
+
+E = [2, 3, 4, 5]
+x = 3
+result = subsets_with_element(E, x)
+print("Subsets containing", x, ":", result)
